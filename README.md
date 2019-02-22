@@ -2,7 +2,7 @@
 
 #### Gist
 Builds a docker image that reads a json input from a file URL and generates a forecasted based on that time series.
-Uses `statsmodels` library
+Uses `statsmodels` library.
 
 ### Usage
 Build Docker image
