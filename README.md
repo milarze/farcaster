@@ -12,7 +12,7 @@ bin/build-docker-image
 
 Run docker
 ```
-docker run -e INPUT_JSON_URL=file_url farcaster
+docker run -e INPUT_JSON_URL=<file_url> farcaster
 ```
 
 Input JSON file format
