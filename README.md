@@ -1,16 +1,30 @@
 # farcaster
 
-Set up virtual environment
+#### Gist
+Builds a docker image that reads a json input from a file URL and generates a forecasted based on that time series.
+Uses `statsmodels` library
+
+### Usage
+Build Docker image
 ```
-python3 -m venv pythonenv
+bin/build-docker-image
 ```
 
-Run terminal in virtual environment
+Run docker
 ```
-source pythonenv/bin/activate
+docker run -e INPUT_JSON_URL=file_url farcaster
 ```
 
-Install dependencies
+Input JSON file format
 ```
-pip install -r requirements.txt
+{
+  "time_series": [
+    {
+      "date": "2019-02-21",
+      "quantity":20.0
+    }
+    ...
+  ],
+  "aggregation": "day" // day, week or month
+}
 ```

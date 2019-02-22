@@ -1,9 +1,11 @@
-FROM ubuntu:18.04
+FROM python:3.7
 
-RUN apt-get update \
-  && apt-get install -y python3-pip python3 \
-  && cd /usr/local/bin \
-  && ln -s /usr/bin/python3 python \
-  && pip3 install --upgrade pip
+WORKDIR /app
+COPY requirements.txt /app/requirements.txt
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
-ENTRYPOINT [ "python3" ]
+COPY ./src /app/src
+COPY ./farcaster /app
+RUN chmod +x ./farcaster
+
+ENTRYPOINT ["/app/farcaster"]

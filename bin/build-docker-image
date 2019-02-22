@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+FARCASTER_DIR=$( dirname $DIR )
+
+docker build -t farcaster $FARCASTER_DIR/
