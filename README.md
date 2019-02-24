@@ -5,6 +5,7 @@
 Builds a docker image that reads a json input from a file URL and generates a forecasted based on that time series.
 Uses `statsmodels` library.
 Use `./fargate/bin/build-docker-image` to build the docker image.
+
 #### Deploy to ECR:
 - Authenticate: `$(aws ecr get-login --no-include-email --region <your region>)`
 - Build: `./fargate/bin/build-docker-image`
@@ -20,7 +21,7 @@ bin/build-docker-image
 
 Run docker
 ```
-docker run -e INPUT_JSON_URL=<file_url> farcaster
+docker run -e INPUT_JSON_URL=<file_key> -e S3_BUCKET=farcaster farcaster
 ```
 
 Input JSON file format
