@@ -1,10 +1,18 @@
 # farcaster
 
-#### Gist
+## tl;dr
+### Directory `/fargate`
 Builds a docker image that reads a json input from a file URL and generates a forecasted based on that time series.
 Uses `statsmodels` library.
+Use `./fargate/bin/build-docker-image` to build the docker image.
 
-### Usage
+#### Deploy to ECR:
+- Authenticate: `$(aws ecr get-login --no-include-email --region <your region>)`
+- Build: `./fargate/bin/build-docker-image`
+- Tag the image: `docker tag farcaster:latest <your account id>.dkr.ecr.<your region>.amazonaws.com/farcaster:latest`
+- Push the image: `docker push <your account id>.dkr.ecr.<your region>.amazonaws.com/farcaster:latest`
+
+#### Usage
 Build Docker image
 ```
 bin/build-docker-image
@@ -12,7 +20,7 @@ bin/build-docker-image
 
 Run docker
 ```
-docker run -e INPUT_JSON_URL=<file_url> farcaster
+docker run -e INPUT_JSON_URL=<file_key> -e S3_BUCKET=farcaster farcaster
 ```
 
 Input JSON file format
@@ -28,3 +36,8 @@ Input JSON file format
   "aggregation": "day" // day, week or month
 }
 ```
+
+### Directory `/lambda`
+Contains the configuration and setup for serverless deployment to AWS Lambda.
+
+Requires a file called `config.dev.json` to have the configurations specific to your AWS account.
