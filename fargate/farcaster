@@ -3,12 +3,18 @@
 import os
 import urllib.request as req
 from src.index import handler
+import boto3
+
 
 def getjson():
-  webReq = req.urlopen(os.getenv('INPUT_JSON_URL'))
-  data = webReq.read()
-  encoding = webReq.info().get_content_charset('utf-8')
-  return data.decode(encoding)
+    json_string = os.getenv('INPUT_JSON_STRING')
+    if not json_string:
+        s3_bucket = os.getenv('S3_BUCKET')
+        key = os.getenv('INPUT_JSON_URL')
+        s3_client = boto3.client('s3')
+        json_string = s3_client.get_object(Bucket=s3_bucket, Key=key)['Body'].read().decode('utf-8')
+    return json_string
+
 
 json_string = getjson()
 prediction = handler(json_string)
