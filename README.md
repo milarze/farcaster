@@ -12,8 +12,7 @@ Use `./fargate/bin/build-docker-image` to build the docker image.
 - Tag the image: `docker tag farcaster:latest <your account id>.dkr.ecr.<your region>.amazonaws.com/farcaster:latest`
 - Push the image: `docker push <your account id>.dkr.ecr.<your region>.amazonaws.com/farcaster:latest`
 
-
-### Usage
+#### Usage
 Build Docker image
 ```
 bin/build-docker-image
@@ -37,3 +36,8 @@ Input JSON file format
   "aggregation": "day" // day, week or month
 }
 ```
+
+### Directory `/lambda`
+Contains the configuration and setup for serverless deployment to AWS Lambda.
+
+Requires a file called `config.dev.json` to have the configurations specific to your AWS account.
