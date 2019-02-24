@@ -15,7 +15,15 @@ def getjson():
         json_string = s3_client.get_object(Bucket=s3_bucket, Key=key)['Body'].read().decode('utf-8')
     return json_string
 
+def create_s3_object(json_string):
+    s3_bucket = os.getenv('S3_BUCKET')
+    key = os.getenv('INPUT_JSON_URL').replace('input', 'output')
+    s3_client = boto3.client('s3')
+    s3_client.put_object(Body=json_string, Bucket=s3_bucket, Key=key)
+    return key
+
 
 json_string = getjson()
 prediction = handler(json_string)
-print(prediction)
+key = create_s3_object(prediction)
+print(key)
