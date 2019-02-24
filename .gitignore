@@ -106,5 +106,6 @@ venv.bak/
 p3
 
 .vscode
-
+.serverless
 node_modules
+config.*.json
