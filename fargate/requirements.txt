@@ -2,3 +2,5 @@ statsmodels
 pandas
 scipy
 boto3
+fbprophet
+scipy
