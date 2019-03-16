@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import os
-import urllib.request as req
 from src.index import handler
 import boto3
 
@@ -22,8 +21,11 @@ def create_s3_object(json_string):
     s3_client.put_object(Body=json_string, Bucket=s3_bucket, Key=key)
     return key
 
+def model():
+    return os.getenv('MODEL') or 'prophet'
+
 
 json_string = getjson()
-prediction = handler(json_string)
+prediction = handler(json_string, model())
 key = create_s3_object(prediction)
 print(key)
