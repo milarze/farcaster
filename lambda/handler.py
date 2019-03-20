@@ -42,7 +42,7 @@ def queue_farcaster(event, context):
                     {
                         'environment': [
                             {
-                                'name': 'INPUT_JSON_URL',
+                                'name': 'INPUT_JSON_KEY',
                                 'value': request_id + '/input.json'
                             },
                             {

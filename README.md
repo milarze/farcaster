@@ -20,7 +20,7 @@ bin/build-docker-image
 
 Run docker
 ```
-docker run -e INPUT_JSON_URL=<file_key> -e S3_BUCKET=farcaster farcaster
+docker run -e INPUT_JSON_KEY=<file_key> -e S3_BUCKET=farcaster farcaster
 ```
 
 Input JSON file format
