@@ -6,11 +6,9 @@ import pandas as pd
 from fbprophet import Prophet
 from scipy.stats import boxcox
 from scipy.special import inv_boxcox
-from pandas.plotting import register_matplotlib_converters
-register_matplotlib_converters()
 
 class FbProphetModel:
-    def __init__(self, json_data):
+    def __init__(self, json_data, _aggregation):
         self.json_data = json_data
         self.data_frame = pd.DataFrame(json_data)
 

@@ -8,10 +8,15 @@ from src.forecast_models.exponential_smoothing_model import ExponentialSmoothing
 from src.forecast_models.fb_prophet_model import FbProphetModel
 
 def model(model_name):
-    if model_name is 'prophet':
+    """
+    Figure out which model to use
+    Returns the FbProphetModel if 'prophet'
+    is the model name given, otherwise defaults to
+    ExponentialSmoothingModel
+    """
+    if model_name == 'prophet':
         return FbProphetModel
-    else:
-        return ExponentialSmoothingModel
+    return ExponentialSmoothingModel
 
 def handler(jsonstring, model_name):
     """
@@ -22,7 +27,7 @@ def handler(jsonstring, model_name):
         payload = json.loads(jsonstring)
         time_series = payload['time_series']
         aggregation = payload['aggregation']
-        prediction = model(model_name)(time_series).magic()
+        prediction = model(model_name)(time_series, aggregation).magic()
         return prediction.to_json(orient='records', date_format='iso')
-    except Exception as error: # pylint: disable=broad-except
+    except Exception: # pylint: disable=broad-except
         return '{"message":"Unknown error ocurred"}'
