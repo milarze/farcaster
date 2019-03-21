@@ -109,3 +109,6 @@ p3
 .serverless
 node_modules
 config.*.json
+
+package*.json
+package.json
