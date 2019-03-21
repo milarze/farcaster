@@ -48,6 +48,10 @@ def queue_farcaster(event, context):
                             {
                                 'name': 'S3_BUCKET',
                                 'value': s3_bucket
+                            },
+                            {
+                                'name': 'MODEL',
+                                'value': 'prophet'
                             }
                         ],
                         'name': runner
@@ -56,7 +60,7 @@ def queue_farcaster(event, context):
             }
         )
 
-        
+
         return {
             'statusCode': 200,
             'headers': {'Content-Type': 'application/json'},
