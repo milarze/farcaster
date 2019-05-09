@@ -18,13 +18,20 @@ def queue_farcaster(event, context):
         subnet = os.getenv('SUBNET')
         s3_bucket = os.getenv('S3_BUCKET')
         cluster = os.getenv('CLUSTER_NAME')
+        table_name = os.getenv('TABLE_NAME')
 
-        now = datetime.datetime.now()
-        expires = now + datetime.timedelta(hours=2)
-
-
-        s3_client = boto3.client('s3')
-        s3_client.put_object(Body=payload, Expires=expires, Bucket=s3_bucket, Key=request_id + '/input.json')
+        dynamodb_client = boto3.client('dynamodb')
+        dynamodb_client.put_item(
+            TableName=table_name,
+            Item={
+                'request_id': {
+                    'S': request_id
+                },
+                'data': {
+                    'S': payload
+                }
+            }
+        )
 
         ecs_client = boto3.client('ecs')
         ecs_client.run_task(
@@ -42,12 +49,12 @@ def queue_farcaster(event, context):
                     {
                         'environment': [
                             {
-                                'name': 'INPUT_JSON_KEY',
-                                'value': request_id + '/input.json'
+                                'name': 'REQUEST_ID',
+                                'value': request_id
                             },
                             {
-                                'name': 'S3_BUCKET',
-                                'value': s3_bucket
+                                'name': 'TABLE_NAME',
+                                'value': table_name
                             },
                             {
                                 'name': 'MODEL',
