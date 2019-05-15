@@ -1,6 +1,15 @@
 # farcaster
 
 ## tl;dr
+There are two parts to this project.
+
+The first is the docker image that actually runs the forecasting models.
+It uses Dynamodb to read input and write output to.
+
+The second part is the lambda function which takes the input time series, pushes it into Dynamodb and queues the ECS task
+that will perform the forecast.
+
+The docker image can be run locally if you can run a dynamodb docker image, and pass the required `ENV` variables to it.
 ### Directory `/fargate`
 Builds a docker image that reads a json input from a file URL and generates a forecasted based on that time series.
 Uses `fbProphet` library.
@@ -14,29 +23,7 @@ Use `./fargate/bin/build-docker-image` to build the docker image.
 - Push the image: `docker push <your account id>.dkr.ecr.<your region>.amazonaws.com/farcaster:latest`
 
 #### Usage
-Build Docker image
-```
-bin/build-docker-image
-```
-
-Run docker
-```
-docker run -e INPUT_JSON_KEY=<file_key> -e S3_BUCKET=farcaster MODEL=<prophet or statsmodels> farcaster
-```
-
-Input JSON file format
-```
-{
-  "time_series": [
-    {
-      "date": "2019-02-21",
-      "quantity":20.0
-    }
-    ...
-  ],
-  "aggregation": "day" // day, week or month
-}
-```
+Setup for local testing is not ready yet.
 
 ### Directory `/lambda`
 Contains the configuration and setup for serverless deployment to AWS Lambda.
