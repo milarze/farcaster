@@ -45,7 +45,9 @@ Requires a file called `config.dev.json` to have the configurations specific to 
 
 #### Deploy to Lambda
 Navigate to `./lambda` and run `serverless package`.
+
 Test what you need to.
+
 When ready to deploy, `serverless deploy`.
 
 ### Issues
