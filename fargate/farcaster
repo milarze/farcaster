@@ -15,7 +15,7 @@ def getjson():
             }
         }
     )
-    return payload['Item']['data']
+    return payload['Item']['data']['S']
 
 def update_dynamodb_response(json_string):
     dynamodb_client = boto3.client('dynamodb')
@@ -25,10 +25,12 @@ def update_dynamodb_response(json_string):
             'request_id': {
                 'S': str(request_id())
             }
-        }
-        UpdateExpression="set json_result = :r",
+        },
+        UpdateExpression="SET json_result = :r",
         ExpressionAttributeValues={
-            ':r': json_string
+            ':r': {
+                'S': json_string
+            }
         },
         ReturnValues="UPDATED_NEW"
     )

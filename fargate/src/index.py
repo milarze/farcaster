@@ -29,5 +29,5 @@ def handler(jsonstring, model_name):
         aggregation = payload['aggregation']
         prediction = model(model_name)(time_series, aggregation).magic()
         return prediction.to_json(orient='records', date_format='iso')
-    except Exception: # pylint: disable=broad-except
+    except Exception as e: # pylint: disable=broad-except
         return '{"message":"Unknown error ocurred"}'

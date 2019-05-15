@@ -5,6 +5,7 @@ Python Lambda entry point
 import datetime
 import os
 import boto3
+from string import Template
 
 
 def queue_farcaster(event, context):
@@ -67,11 +68,12 @@ def queue_farcaster(event, context):
             }
         )
 
+        body_template = Template('{"message":"Task queued","request_id":"$request_id"}')
 
         return {
             'statusCode': 200,
             'headers': {'Content-Type': 'application/json'},
-            'body': '{"message":"Task queued"}'
+            'body': body_template.substitute(request_id=request_id)
         }
     except Exception as err: # pylint: disable=broad-except
         print(str(err))
