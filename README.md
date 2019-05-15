@@ -3,7 +3,8 @@
 ## tl;dr
 ### Directory `/fargate`
 Builds a docker image that reads a json input from a file URL and generates a forecasted based on that time series.
-Uses `statsmodels` library.
+Uses `fbProphet` library.
+Default model used is `Prophet`. The Holt-Winters model provided by `statsmodels` is also available.
 Use `./fargate/bin/build-docker-image` to build the docker image.
 
 #### Deploy to ECR:
@@ -41,3 +42,11 @@ Input JSON file format
 Contains the configuration and setup for serverless deployment to AWS Lambda.
 
 Requires a file called `config.dev.json` to have the configurations specific to your AWS account.
+
+#### Deploy to Lambda
+Navigate to `./lambda` and run `serverless package`.
+Test what you need to.
+When ready to deploy, `serverless deploy`.
+
+### Issues
+Have not figured out why the `dynamodb` permissions in `serverless.yml` are not being passed to the `ecsTaskExecutionRole`.

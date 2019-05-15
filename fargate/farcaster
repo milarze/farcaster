@@ -6,26 +6,46 @@ import boto3
 
 
 def getjson():
-    json_string = os.getenv('INPUT_JSON_STRING')
-    if not json_string:
-        s3_bucket = os.getenv('S3_BUCKET')
-        key = os.getenv('INPUT_JSON_KEY')
-        s3_client = boto3.client('s3')
-        json_string = s3_client.get_object(Bucket=s3_bucket, Key=key)['Body'].read().decode('utf-8')
-    return json_string
+    dynamodb_client = boto3.client('dynamodb')
+    payload = dynamodb_client.get_item(
+        TableName=table_name(),
+        Key={
+            'request_id': {
+                'S': str(request_id())
+            }
+        }
+    )
+    return payload['Item']['data']['S']
 
-def create_s3_object(json_string):
-    s3_bucket = os.getenv('S3_BUCKET')
-    key = os.getenv('INPUT_JSON_KEY').replace('input', 'output')
-    s3_client = boto3.client('s3')
-    s3_client.put_object(Body=json_string, Bucket=s3_bucket, Key=key)
-    return key
+def update_dynamodb_response(json_string):
+    dynamodb_client = boto3.client('dynamodb')
+    dynamodb_client.update_item(
+        TableName=table_name(),
+        Key={
+            'request_id': {
+                'S': str(request_id())
+            }
+        },
+        UpdateExpression="SET json_result = :r",
+        ExpressionAttributeValues={
+            ':r': {
+                'S': json_string
+            }
+        },
+        ReturnValues="UPDATED_NEW"
+    )
 
 def model():
     return os.getenv('MODEL') or 'prophet'
 
+def request_id():
+    return os.getenv('REQUEST_ID')
+
+def table_name():
+    return os.getenv('TABLE_NAME')
+
 
 json_string = getjson()
 prediction = handler(json_string, model())
-key = create_s3_object(prediction)
-print(key)
+update_dynamodb_response(prediction)
+print('Farcaster completed')
